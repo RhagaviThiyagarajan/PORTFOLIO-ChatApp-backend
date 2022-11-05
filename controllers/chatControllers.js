@@ -14,12 +14,13 @@ const accessChat = asyncHandler(async (req, res) => {
   var isChat = await Chat.find({
     isGroupChat: false,
     $and: [
-      { users: { $elemMatch: { $eq: req.user._id } } },
+       { users: { $elemMatch: { $eq: req.body._id } } },
       { users: { $elemMatch: { $eq: userId } } },
     ],
   })
     .populate("users", "-password")
     .populate("latestMessage");
+    console.log(req.user);
 
   isChat = await User.populate(isChat, {
     path: "latestMessage.sender",

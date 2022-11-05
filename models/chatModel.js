@@ -9,6 +9,7 @@ const chatModel = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "chatAppMessage",
     },
+    // groupAdmin: { type: mongoose.Schema.Types.ObjectId, ref: "chatAppUser" },
   },
   { timestamps: true }
 );
