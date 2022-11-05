@@ -3,7 +3,7 @@ const Chat = require("../models/chatModel");
 const User = require("../models/userModel");
 const accessChat = async (req, res) => {
   const { userId } = req.body;
-console.log(req.body);
+  console.log(req.body);
   if (!userId) {
     console.log("UserId param not sent with request");
     return res.sendStatus(400);
@@ -14,14 +14,14 @@ console.log(req.body);
   var isChat = await Chat.find({
     isGroupChat: false,
     $and: [
-       { users: { $elemMatch: { $eq: req.body.userId } } },
+      { users: { $elemMatch: { $eq: req.body.userId } } },
       // { users: { $elemMatch: { $eq: req.body.userId } } },
     ],
   })
     .populate("users", "-password")
     .populate("latestMessage");
-    console.log(req.body);
-    // console.log(req.params);
+  console.log(req.body);
+  // console.log(req.params);
 
   isChat = await User.populate(isChat, {
     path: "latestMessage.sender",
@@ -35,7 +35,7 @@ console.log(req.body);
       chatName: "sender",
       isGroupChat: false,
       // users: [req.user._id, userId],
-      users:[userId],
+      users: [userId],
     };
 
     try {
@@ -98,14 +98,12 @@ const createGroupChat = asyncHandler(async (req, res) => {
       chatName: req.body.name,
       users: users,
       isGroupChat: true,
-      // groupAdmin: req.user,
+      groupAdmin: req.user,
     });
 
-    const fullGroupChat = await Chat.findOne({ _id: groupChat._id }).populate(
-      "users",
-      "-password"
-    );
-    // .populate("groupAdmin", "-password");
+    const fullGroupChat = await Chat.findOne({ _id: groupChat._id })
+      .populate("users", "-password")
+      .populate("groupAdmin", "-password");
 
     res.status(200).json(fullGroupChat);
   } catch (error) {
@@ -125,9 +123,8 @@ const renameGroup = asyncHandler(async (req, res) => {
     {
       new: true,
     }
-  )
-    .populate("users", "-password")
-    // .populate("groupAdmin", "-password");
+  ).populate("users", "-password");
+  // .populate("groupAdmin", "-password");
 
   if (!updatedChat) {
     res.status(404);
@@ -146,9 +143,8 @@ const addTOGroup = asyncHandler(async (req, res) => {
       $push: { users: userId },
     },
     { new: true }
-  )
-    .populate("users", "-password")
-    // .populate("groupAdmin", "-password");
+  ).populate("users", "-password");
+  // .populate("groupAdmin", "-password");
 
   if (!added) {
     res.status(404);
@@ -171,9 +167,8 @@ const removeFromGroup = asyncHandler(async (req, res) => {
     {
       new: true,
     }
-  )
-    .populate("users", "-password")
-    // .populate("groupAdmin", "-password");
+  ).populate("users", "-password");
+  // .populate("groupAdmin", "-password");
 
   if (!removed) {
     res.status(404);
