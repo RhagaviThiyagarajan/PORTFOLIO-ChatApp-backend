@@ -98,12 +98,12 @@ const createGroupChat = asyncHandler(async (req, res) => {
       chatName: req.body.name,
       users: users,
       isGroupChat: true,
-      groupAdmin: req.user,
+      // groupAdmin: req.user,
     });
 
     const fullGroupChat = await Chat.findOne({ _id: groupChat._id })
       .populate("users", "-password")
-      .populate("groupAdmin", "-password");
+      // .populate("groupAdmin", "-password");
 
     res.status(200).json(fullGroupChat);
   } catch (error) {
@@ -167,8 +167,9 @@ const removeFromGroup = asyncHandler(async (req, res) => {
     {
       new: true,
     }
-  ).populate("users", "-password");
-  // .populate("groupAdmin", "-password");
+  )
+    .populate("users", "-password")
+    .populate("groupAdmin", "-password");
 
   if (!removed) {
     res.status(404);
