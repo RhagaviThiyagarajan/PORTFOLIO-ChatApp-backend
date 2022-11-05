@@ -1,9 +1,9 @@
 const asyncHandler = require("express-async-handler");
 const Chat = require("../models/chatModel");
 const User = require("../models/userModel");
-const accessChat = asyncHandler(async (req, res) => {
+const accessChat = async (req, res) => {
   const { userId } = req.body;
-
+console.log(req.body);
   if (!userId) {
     console.log("UserId param not sent with request");
     return res.sendStatus(400);
@@ -14,13 +14,14 @@ const accessChat = asyncHandler(async (req, res) => {
   var isChat = await Chat.find({
     isGroupChat: false,
     $and: [
-       { users: { $elemMatch: { $eq: req.body._id } } },
-      { users: { $elemMatch: { $eq: userId } } },
+       { users: { $elemMatch: { $eq: req.body.userId } } },
+      // { users: { $elemMatch: { $eq: req.body.userId } } },
     ],
   })
     .populate("users", "-password")
     .populate("latestMessage");
-    console.log(req.user);
+    console.log(req.body);
+    // console.log(req.params);
 
   isChat = await User.populate(isChat, {
     path: "latestMessage.sender",
@@ -33,7 +34,8 @@ const accessChat = asyncHandler(async (req, res) => {
     var chatData = {
       chatName: "sender",
       isGroupChat: false,
-      users: [req.user._id, userId],
+      // users: [req.user._id, userId],
+      users:[userId],
     };
 
     try {
@@ -48,11 +50,11 @@ const accessChat = asyncHandler(async (req, res) => {
       throw new Error(error.message);
     }
   }
-});
+};
 //@description
 const fetchChats = asyncHandler(async (req, res) => {
   try {
-    Chat.find({ users: { $elemMatch: { $eq: req.user._id } } })
+    Chat.find({ users: { $elemMatch: { $eq: req.body._id } } })
       .populate("users", "-password")
       // .populate("groupAdmin", "-password")
       .populate("latestMessage")
