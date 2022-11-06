@@ -44,6 +44,18 @@ app.use("/api/message",messageRoutes);
 app.use(notFound)
 app.use(errorHandler)
 const port = process.env.PORT || 8080;
-app.listen(port, () => {
+const server=app.listen(port, () => {
   console.log(`http://localhost:${port}`);
 });
+
+const io=require('socket.io')(server,{
+  pingTimeout:80000,
+  cors:{
+    origin:'*',
+  },
+});
+
+
+io.on('connection',(socket)=>{
+console.log('connected to socket.io');
+})
