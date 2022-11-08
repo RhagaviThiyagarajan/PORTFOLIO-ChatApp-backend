@@ -15,7 +15,7 @@ const accessChat = async (req, res) => {
     isGroupChat: false,
     $and: [
       { users: { $elemMatch: { $eq: req.body.userId } } },
-      // // { users: { $elemMatch: { $eq: req.body.userId } } },
+      // { users: { $elemMatch: { $eq: req.body.userId } } },
 
 
 
@@ -39,8 +39,8 @@ const accessChat = async (req, res) => {
     var chatData = {
       chatName: "sender",
       isGroupChat: false,
-      users: [req.user._id, userId],
-      // users: [userId],
+      // users: [req.user._id, userId],
+      users: [userId],
     };
 
     try {
@@ -59,8 +59,8 @@ const accessChat = async (req, res) => {
 //@description
 const fetchChats = asyncHandler(async (req, res) => {
   try {
-    Chat.find({ users: { $elemMatch: { $eq: req.user._id } } })
-    // Chat.find({ users: { $elemMatch: { $eq: req.body._id } } })
+    // Chat.find({ users: { $elemMatch: { $eq: req.user._id } } })
+    Chat.find({ users: { $elemMatch: { $eq: req.body._id } } })
       .populate("users", "-password")
       // .populate("groupAdmin", "-password")
       .populate("latestMessage")
