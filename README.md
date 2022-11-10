@@ -1,10 +1,10 @@
-# ChatApp-frontEnd-MERN
+# ChatApp-backend-MERN
 
 Netlify-MERN-https://chatapp-mern-portfolio.netlify.app/
 
 Heroku-heroku-https://chatappnodeheroku.herokuapp.com/
 
-backend-https://github.com/RhagaviThiyagarajan/PORTFOLIO-ChatApp-backend.git
+frontEnd-https://github.com/RhagaviThiyagarajan/ChatApp-frontEnd-final.git
 
 
 
