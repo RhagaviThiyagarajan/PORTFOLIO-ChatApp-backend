@@ -32,7 +32,7 @@ packages used in frontend
 •	framer motion
 •	react-chips
 •	react-lottie
-•	socket-io-client
+•	socket-io-client..
 
 
 features
